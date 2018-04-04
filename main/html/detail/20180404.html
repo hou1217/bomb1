@@ -2,8 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>文章详情</title>
-<meta name="viewport" content="initial-scale=1,maximum-scale=0.5" />
+<meta name="viewport" content="initial-scale=1,maximum-scale=1" />
 <style>
   .container{
     font-family: 'Microsoft YaHei','Helvetica','Arial',sans-serif;
@@ -404,7 +405,7 @@
 			</li>
 			<li class="li-footer">
         <!-- 查看原文 -->
-				<a id="origin-link" href="");">查看原文</a>
+				<a id="origin-link">查看原文</a>
 				<div class="footer-panel">
 					<span class="footer-source" id="footer_source">
           <!-- 文本来源 -->
@@ -515,16 +516,15 @@
 		</ul>
 	</div>
 </div>
-</body>
-<script type="text/javascript">
+<script>
 var mediaFollow = false;
 var articleId = '5a97ce3233f17c7ec8a7c858';
 var portrait = '/media-dc/assets/base/img/default_portrait.png';   //用户头像URL
 window.onload = function() {
-	document.getElementById("topic_hot_chat").style.backgroundImage = "url(http://wander.dev.wallan.tech/media-app/media/download/ORIGIN/NEWS-5a66f227963a654b5dfaf8e1)";
-	var contentImg = document.getElementById("article_content").getElementsByTagName("img");
-	for(var i=0;i<contentImg.length;i++){
-	   	contentImg[i].setAttribute("src",contentImg[i].getAttribute("src").replace("THUMB","ORIGIN"));
+  document.getElementById("topic_hot_chat").style.backgroundImage = "url(http://wander.dev.wallan.tech/media-app/media/download/ORIGIN/NEWS-5a66f227963a654b5dfaf8e1)";
+  var contentImg = document.getElementById("article_content").getElementsByTagName("img");
+  for(var i=0;i<contentImg.length;i++){
+      contentImg[i].setAttribute("src",contentImg[i].getAttribute("src").replace("THUMB","ORIGIN"));
   }
   /*
   *发起ajax请求，用返回的数据填充页面
@@ -555,31 +555,36 @@ window.onload = function() {
 
   getJSON("http://houyishuai.dev.dc.wallan-tech.com").then(function(data) {
     console.log(data);
-    // 获取页面中需要的元素
-    var article = data.article;
-    var title = document.getElementById("article_title");
-    var content = document.getElementById("article_content");
-    var time = document.getElementById("article_time");
-    var keywords = document.getElementById("article_keywords");
-    var mediaNames = document.getElementsByClassName("article-meta-name");
-    var portraits = document.getElementsByClassName("img-media");
-    var follow1 = document.getElementById("follow1"); 
-    var follow2 = document.getElementById("follow2"); 
-    var originAuthor = document.getElementById("footer_author"); 
-    var origin = document.getElementById("footer_source"); 
-    var originUrl = document.getElementById("origin-link");
-    var mediaFans = document.getElementById("media-fans");
-    var starCounts = document.getElementsByClassName("star-count");
-
+    
+    /*
+    *创建变量
+    *获取页面中需要的元素
+    */
+    let article = data.article,
+        title = document.getElementById("article_title"),
+        content = document.getElementById("article_content"),
+        time = document.getElementById("article_time"),
+        keywords = document.getElementById("article_keywords"),
+        mediaNames = document.getElementsByClassName("article-meta-name"),
+        portraits = document.getElementsByClassName("img-media"),
+        follow1 = document.getElementById("follow1"), 
+        follow2 = document.getElementById("follow2"), 
+        originAuthor = document.getElementById("footer_author"), 
+        origin = document.getElementById("footer_source"), 
+        originUrl = document.getElementById("origin-link"),
+        mediaFans = document.getElementById("media-fans"),
+        starCounts = document.getElementsByClassName("star-count");
+    
+    console.log(parseInt(070));
     //获取url
     // console.log(window.location.href);
     //公众号名字
-    for(var mediaName of mediaNames){
+    for(let mediaName of mediaNames){
       mediaName.innerHTML = article.media.name;
     }
 
     //公众号头像
-    for(var portrait of portraits){
+    for(let portrait of portraits){
       portrait.src = article.media.portraitUrl;
     }
     //粉丝数
@@ -588,7 +593,7 @@ window.onload = function() {
             <span>粉丝${article.media.follows}</span>
           `;
     //点赞数
-    for(var starCount of starCounts){
+    for(let starCount of starCounts){
       starCount.innerHTML = article.likes;
     }
     
@@ -599,26 +604,26 @@ window.onload = function() {
     //作者
     originAuthor.innerHTML = "作者："+article.originAuthor;
     //公众号ID
-    var ele_id1 = "";
+    let ele_id1 = "";
     ele_id1 += `
                 <input type="hidden" id="follow">
                 <span class="media-un-follow" id="follow-action" onclick="follow('${article.media.id}');">+关注</span>
                   `;
     follow1.innerHTML = ele_id1;
-    var ele_id2 = "";
+    let ele_id2 = "";
     ele_id2 += `
                 <span class="media-un-follow" id="follow-action-bottom" onclick="follow('${article.media.id}');">+关注</span>
                   `;
     follow2.innerHTML = ele_id2;
 
     //文章关键字
-    var ele_words = "";
-    for(var item of article.keywords){
-      if(`${item}`){
+    let ele_words = "";
+    for(let item of article.keywords){
+      // if(`${item}`){
         ele_words += `
                 <span>${item}</span>
                   `;
-      }
+      // }
       
     }
     keywords.innerHTML = ele_words;
@@ -643,9 +648,9 @@ window.onload = function() {
     }
     time.innerHTML =  new Date(article.createdAt).Format("yyyy-MM-dd hh:mm:ss");
     // 文章内容
-    var ele_text = "";
-    for(var item of article.items){
-      if(`${item.content}`){
+    let ele_text = "";
+    for(let item of article.items){
+      if(item.content){
         ele_text += `
                 <p>${item.content}</p>
                   `;
@@ -665,55 +670,56 @@ window.onload = function() {
 }
 
 // 外部定义的函数，在需要时调用
+// 查看原文地址
 function originPreview(originUrl){
-	window.location.href="article-preview:"+originUrl;
+  window.location.href="article-preview:"+originUrl;
 }
-
+//查看公众号ID
 function mediaDetail(mediaId){
-	window.location.href="article-media-id:"+mediaId;
+  window.location.href="article-media-id:"+mediaId;
 }
-
+//查看频道ID
 function channelDetail(channelId){
-	window.location.href="article-channel-id:"+channelId;
+  window.location.href="article-channel-id:"+channelId;
 }
-
+//查看文章的推荐
 function recommendArticleDetail(articleId){
    var article = {};   //article.articleId=articleId;
    article.articleId="5a6e6c3033f17c425b47a520";
    article.mediaType="V_IMAGE";
    //var articleStr = JSON.stringify(article);
    var articleStr = '{"articleId":"5a6e6c3033f17c425b47a520","mediaType":"V_IMAGE"}';
-	window.location.href="recommend-article-id:eyJhcnRpY2xlVXJsIjoiaHR0cHM6Ly93YW5kZXIud2FsbGFuLXRlY2guY29tOjE0NDMvbWVkaWEtZGMvYXJ0aWNsZS9kZXRhaWwvNWE3M2MxY2EzM2YxN2M1MGNjN2IxMGM1IiwibWVkaWFUeXBlIjoiVl9JTUFHRSJ9";
+  window.location.href="recommend-article-id:eyJhcnRpY2xlVXJsIjoiaHR0cHM6Ly93YW5kZXIud2FsbGFuLXRlY2guY29tOjE0NDMvbWVkaWEtZGMvYXJ0aWNsZS9kZXRhaWwvNWE3M2MxY2EzM2YxN2M1MGNjN2IxMGM1IiwibWVkaWFUeXBlIjoiVl9JTUFHRSJ9";
 }
-
+//公众号关注和取消
 function follow(mediaId){
-	var url = "";
-	if(mediaFollow){		
-		document.getElementById("follow-action").setAttribute("class","media-un-follow");
-		document.getElementById("follow-action").innerHTML = "+关注";
-		document.getElementById("follow-action-bottom").setAttribute("class","media-un-follow");
-		document.getElementById("follow-action-bottom").innerHTML = "+关注";
-		mediaFollow = false;
-		url = "/media-dc/media/unfollow/"+mediaId;
-	}else{
-		document.getElementById("follow-action").setAttribute("class","media-follow");
-		document.getElementById("follow-action").innerHTML = "已关注";
-		document.getElementById("follow-action-bottom").setAttribute("class","media-follow");
-		document.getElementById("follow-action-bottom").innerHTML = "已关注";
-		mediaFollow = true;
-		url = "/media-dc/media/follow/"+mediaId;
-	}
-	var method = "GET";
-	request(url, method, function(response){
-		var result = JSON.parse(response);
-		console.log(result);
+  var url = "";
+  if(mediaFollow){    
+    document.getElementById("follow-action").setAttribute("class","media-un-follow");
+    document.getElementById("follow-action").innerHTML = "+关注";
+    document.getElementById("follow-action-bottom").setAttribute("class","media-un-follow");
+    document.getElementById("follow-action-bottom").innerHTML = "+关注";
+    mediaFollow = false;
+    url = "/media-dc/media/unfollow/"+mediaId;
+  }else{
+    document.getElementById("follow-action").setAttribute("class","media-follow");
+    document.getElementById("follow-action").innerHTML = "已关注";
+    document.getElementById("follow-action-bottom").setAttribute("class","media-follow");
+    document.getElementById("follow-action-bottom").innerHTML = "已关注";
+    mediaFollow = true;
+    url = "/media-dc/media/follow/"+mediaId;
+  }
+  var method = "GET";
+  request(url, method, function(response){
+    var result = JSON.parse(response);
+    console.log(result);
     
-	});
+  });
 }
 
-
+//ajax的封装方法
 function request(url,method,callback){
-	var request = new XMLHttpRequest();
+  var request = new XMLHttpRequest();
     request.open(method, url, true);
     request.setRequestHeader("WALLAN-TOKEN", "ba88626517342609e76dc8f8d751ec82");
     request.setRequestHeader("WALLAN-DEVICENUM", "12000000000");
@@ -727,57 +733,57 @@ function request(url,method,callback){
     formData.append("articleId", articleId); */
     request.send(null);
 }
-
+//获取当前浏览器的高度
 function getContentHeight(){
-	var li = document.getElementsByTagName("li");
-	var height = 0;
-	for(var i=0;i<6;i++){
-		var liDocument = li[i];
-		height += liDocument.offsetHeight;
-	}
-	return height;
+  var li = document.getElementsByTagName("li");
+  var height = 0;
+  for(var i=0;i<6;i++){
+    var liDocument = li[i];
+    height += liDocument.offsetHeight;
+  }
+  return height;
 }
-
+//点赞的功能
 function starImg(){
-	var isStar = document.getElementById("star_img").getAttribute("class");
-	var url = "";
-	if(isStar == "star"){
-		document.getElementById("star_img").setAttribute("class","un-star");
-		document.getElementById("star_img").setAttribute("src","/media-dc/assets/base/img/un_star.png");
-		if(parseInt(document.getElementsByClassName("star-count")[0].innerHTML)-1 >= 0){
-			document.getElementsByClassName("star-count")[0].innerHTML = parseInt(document.getElementsByClassName("star-count")[0].innerHTML)-1;
-			document.getElementsByClassName("star-count")[1].innerHTML = parseInt(document.getElementsByClassName("star-count")[1].innerHTML)-1;
-		}
-		url = "/media-dc/article/unstar/"+articleId;
-		if(document.getElementById("star_img_panel").getElementsByTagName("img").length == 5){
-			document.getElementById("star_img_panel").removeChild(document.getElementById("star_img_panel").getElementsByTagName("img")[0]);
-			document.getElementById("star_img_panel").getElementsByTagName("img")[3].style.display="inline";
-		}else{
-			document.getElementById("star_img_panel").removeChild(document.getElementById("star_img_panel").getElementsByTagName("img")[0]);
-		}
-		
-	}else{
-		document.getElementById("star_img").setAttribute("class","star");
-		document.getElementById("star_img").setAttribute("src","/media-dc/assets/base/img/star.png");
-		document.getElementsByClassName("star-count")[0].innerHTML = parseInt(document.getElementsByClassName("star-count")[0].innerHTML)+1;
-		document.getElementsByClassName("star-count")[1].innerHTML = parseInt(document.getElementsByClassName("star-count")[1].innerHTML)+1;
-		url = "/media-dc/article/star/"+articleId;
-		if(document.getElementById("star_img_panel").getElementsByTagName("img").length == 4){
-			var img = document.createElement("img");
-			img.setAttribute("src",portrait);
-			document.getElementById("star_img_panel").prepend(img);
-			document.getElementById("star_img_panel").getElementsByTagName("img")[4].style.display="none";
-		}else{
-			var img = document.createElement("img");
-			img.setAttribute("src",portrait);
-			document.getElementById("star_img_panel").prepend(img);
-		}
-	}
-	var method = "GET";
-	request(url, method, function(response){
-	});
+  var isStar = document.getElementById("star_img").getAttribute("class");
+  var url = "";
+  if(isStar == "star"){
+    document.getElementById("star_img").setAttribute("class","un-star");
+    document.getElementById("star_img").setAttribute("src","/media-dc/assets/base/img/un_star.png");
+    if(parseInt(document.getElementsByClassName("star-count")[0].innerHTML)-1 >= 0){
+      document.getElementsByClassName("star-count")[0].innerHTML = parseInt(document.getElementsByClassName("star-count")[0].innerHTML)-1;
+      document.getElementsByClassName("star-count")[1].innerHTML = parseInt(document.getElementsByClassName("star-count")[1].innerHTML)-1;
+    }
+    url = "/media-dc/article/unstar/"+articleId;
+    if(document.getElementById("star_img_panel").getElementsByTagName("img").length == 5){
+      document.getElementById("star_img_panel").removeChild(document.getElementById("star_img_panel").getElementsByTagName("img")[0]);
+      document.getElementById("star_img_panel").getElementsByTagName("img")[3].style.display="inline";
+    }else{
+      document.getElementById("star_img_panel").removeChild(document.getElementById("star_img_panel").getElementsByTagName("img")[0]);
+    }
+    
+  }else{
+    document.getElementById("star_img").setAttribute("class","star");
+    document.getElementById("star_img").setAttribute("src","/media-dc/assets/base/img/star.png");
+    document.getElementsByClassName("star-count")[0].innerHTML = parseInt(document.getElementsByClassName("star-count")[0].innerHTML)+1;
+    document.getElementsByClassName("star-count")[1].innerHTML = parseInt(document.getElementsByClassName("star-count")[1].innerHTML)+1;
+    url = "/media-dc/article/star/"+articleId;
+    if(document.getElementById("star_img_panel").getElementsByTagName("img").length == 4){
+      var img = document.createElement("img");
+      img.setAttribute("src",portrait);
+      document.getElementById("star_img_panel").prepend(img);
+      document.getElementById("star_img_panel").getElementsByTagName("img")[4].style.display="none";
+    }else{
+      var img = document.createElement("img");
+      img.setAttribute("src",portrait);
+      document.getElementById("star_img_panel").prepend(img);
+    }
+  }
+  var method = "GET";
+  request(url, method, function(response){
+  });
 }
 
 </script>
-
+</body>
 </html>
